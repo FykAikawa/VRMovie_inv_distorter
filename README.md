@@ -10,7 +10,7 @@ This script simulate post-distortion which is originally　brought by lenses.<br
 How to use<br>
 1.Record SteamVR's mirrored display. sample movie(distorted.mp4) is available.<br>
 2.put corrector.py and recorded movie(rename distorted.mp4) in the same folder.<br>
-3.run corrector.py, then you will get compensated movie.<br>
+3.run corrector.py, then you will get compensated movie. corrected.mp4 is compensated sample movie.<br>
  
 corrector.py assume that the pre-distortion is defined (X,Y)= (x,y) * (a * r ** 4 + b * r ** 2 + c) where r ** 2 = (x ** 2 + y ** 2)<br>
 You can change coefficients, which are a,b and c ,to get better result.<br>
