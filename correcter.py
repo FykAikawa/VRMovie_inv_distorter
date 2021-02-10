@@ -63,9 +63,9 @@ frame_rate = int(video.get(cv2.CAP_PROP_FPS))
 fmt = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
 writer = cv2.VideoWriter('./undistorted.mp4', fmt, frame_rate, wh)
 #heuristic value
-c0= 1.1
-c1= 0.1
-c2= -0.3
+c0= 1.0
+c1= -0.1
+c2= -0.1
 
 for i in tqdm(range(frame_count)): #progress bar
     ret, frame = video.read()
