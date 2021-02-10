@@ -27,13 +27,19 @@ def inv_frame(frame,width,height,c0,c1,c2):
         for w in range(width):
             if w < width //2: #left
                 r = ((h-height/2)**2 + (w-width/4)**2)/((width//4)**2+(height//2)**2)
-                scale= (c+b*r+a*r*r)
+                scale=(c+b*r+a*r*r) #distortion approximation with second-order function
+                H=int((h-height/2)*scale)+height//2
+                W=int((w-width/4)*scale)+width//4
                 #print(r/math.sqrt(480**2 + 540**2))
-                revframe[h][w]= frame[int((h-height/2)*scale)+height//2][int((w-width/4)*scale)+width//4]
+                if 0<=H<height and 0<=W<width//2:
+                    revframe[h][w]= frame[H][W]
             else: #right
                 r = ((h-height/2)**2 + (w-width*3/4)**2)/((width//4)**2+(height//2)**2)
-                scale= (c+b*r+a*r*r)
-                revframe[h][w]= frame[int((h-height/2)*scale)+height//2][int((w-width*3/4)*scale)+width*3//4]
+                scale= (c+b*r+a*r*r) #distortion approximation with second-order function
+                H=int((h-height/2)*scale)+height//2
+                W=int((w-width*3/4)*scale)+width*3//4
+                if 0<=H<height and width//2<=W<width:
+                    revframe[h][w]= frame[H][W]
     if guide:
         for h in range(0,height,60):
             revframe[h,:]=254
@@ -57,10 +63,9 @@ frame_rate = int(video.get(cv2.CAP_PROP_FPS))
 fmt = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
 writer = cv2.VideoWriter('./undistorted.mp4', fmt, frame_rate, wh)
 #heuristic value
-#assert c0+c1+c2<1 or script will crush
-c0= 1
-c1= -0.1
-c2= -0.1
+c0= 1.1
+c1= 0.1
+c2= -0.3
 
 for i in tqdm(range(frame_count)): #progress bar
     ret, frame = video.read()
